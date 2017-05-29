@@ -1,3 +1,0 @@
-# netshop
-
-Project of webshop.
