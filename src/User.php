@@ -164,5 +164,64 @@ class User {
         return FALSE;
     }
     
+    static public function loadUserById(int $id) {
+        
+        $query = "SELECT * FROM users WHERE id=$id";
+        
+        $result = Connection::connect($query);
+        
+        if ($result) {
+            
+            $row = $result->fetch_assoc();
+            
+            $user = new User();
+                
+            $user->setId(intval($row['id']));
+            $user->setEmail($row['email']);
+            $user->setHashedPassword($row['hashed_password']);
+            $user->setName($row['name']);
+            $user->setSurname($row['surname']);
+            $user->setAddress($row['address']);
+            $user->setActive($row['active']);
+            
+            return $user;
+            
+        }
+        return FALSE;
+    }
+    
+    static public function loadUserByEmail(string $email) {
+        
+        if (!preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) {
+
+            return FALSE;
+            
+        }
+        
+        $query = "SELECT * FROM users WHERE email='" . $email . "'";
+        
+        $result = Connection::connect($query);
+        
+        if ($result) {
+            
+            $row = $result->fetch_assoc();
+            
+            $user = new User();
+                
+            $user->setId(intval($row['id']));
+            $user->setEmail($row['email']);
+            $user->setHashedPassword($row['hashed_password']);
+            $user->setName($row['name']);
+            $user->setSurname($row['surname']);
+            $user->setAddress($row['address']);
+            $user->setActive($row['active']);
+            
+            return $user;
+            
+        }
+        return FALSE;
+        
+    }
+    
 }
 
