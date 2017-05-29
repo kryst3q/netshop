@@ -1,7 +1,5 @@
 <?php
 
-//require_once 'Connection.php';
-
 class User {
     
     public $id;
@@ -120,7 +118,7 @@ class User {
         return FALSE;
     }
 
-    public function createUser(User $user) {
+    public function createUser(User $user) : bool {
         
         $query = "INSERT INTO users (email, hashed_password, name, surname, address, active) VALUES ('"
                 . $user->getEmail() . "', '"
@@ -132,6 +130,38 @@ class User {
         
         return (Connection::connect($query)) ? TRUE : FALSE;
         
+    }
+    
+    static public function loadAllUsers() {
+        
+        $query = "SELECT * FROM users";
+        
+        $result = Connection::connect($query);
+        
+        if ($result) {
+            
+            $users = [];
+            
+            foreach ($result as $row) {
+                
+                $user = new User();
+                
+                $user->setId(intval($row['id']));
+                $user->setEmail($row['email']);
+                $user->setHashedPassword($row['hashed_password']);
+                $user->setName($row['name']);
+                $user->setSurname($row['surname']);
+                $user->setAddress($row['address']);
+                $user->setActive($row['active']);
+                
+                $users[] = $user;
+                
+            }
+            
+            return $users;
+            
+        }
+        return FALSE;
     }
     
 }
