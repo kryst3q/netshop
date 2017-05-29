@@ -132,6 +132,22 @@ class User {
         
     }
     
+    static private function createUserObject(array $row) {
+        
+        $user = new User();
+                
+        $user->setId(intval($row['id']));
+        $user->setEmail($row['email']);
+        $user->setHashedPassword($row['hashed_password']);
+        $user->setName($row['name']);
+        $user->setSurname($row['surname']);
+        $user->setAddress($row['address']);
+        $user->setActive($row['active']);
+        
+        return $user;
+        
+    }
+    
     static public function loadAllUsers() {
         
         $query = "SELECT * FROM users";
@@ -144,17 +160,7 @@ class User {
             
             foreach ($result as $row) {
                 
-                $user = new User();
-                
-                $user->setId(intval($row['id']));
-                $user->setEmail($row['email']);
-                $user->setHashedPassword($row['hashed_password']);
-                $user->setName($row['name']);
-                $user->setSurname($row['surname']);
-                $user->setAddress($row['address']);
-                $user->setActive($row['active']);
-                
-                $users[] = $user;
+                $users[] = User::createUserObject($row);
                 
             }
             
@@ -174,17 +180,7 @@ class User {
             
             $row = $result->fetch_assoc();
             
-            $user = new User();
-                
-            $user->setId(intval($row['id']));
-            $user->setEmail($row['email']);
-            $user->setHashedPassword($row['hashed_password']);
-            $user->setName($row['name']);
-            $user->setSurname($row['surname']);
-            $user->setAddress($row['address']);
-            $user->setActive($row['active']);
-            
-            return $user;
+            return User::createUserObject($row);
             
         }
         return FALSE;
@@ -206,17 +202,7 @@ class User {
             
             $row = $result->fetch_assoc();
             
-            $user = new User();
-                
-            $user->setId(intval($row['id']));
-            $user->setEmail($row['email']);
-            $user->setHashedPassword($row['hashed_password']);
-            $user->setName($row['name']);
-            $user->setSurname($row['surname']);
-            $user->setAddress($row['address']);
-            $user->setActive($row['active']);
-            
-            return $user;
+            return User::createUserObject($row);
             
         }
         return FALSE;
