@@ -219,7 +219,7 @@ class User {
         
     }
     
-    public function updateEmail(User $user, string $newEmail) : bool {
+    static public function updateEmail(User $user, string $newEmail) : bool {
         
         $query = "UPDATE users SET email='" . $newEmail . "' WHERE id=" . $user->getId();
         
@@ -231,9 +231,21 @@ class User {
         return FALSE;
     }
     
-    public function updateName(User $user, string $newName) : bool {
+    static public function updateName(User $user, string $newName) : bool {
         
         $query = "UPDATE users SET name='" . $newName . "' WHERE id=" . $user->getId();
+        
+        if (Connection::connect($query)) {
+            
+            return TRUE;
+            
+        }
+        return FALSE;
+    }
+    
+    static public function updateAddress(User $user, string $newAddress) : bool {
+        
+        $query = "UPDATE users SET address='" . $newAddress . "' WHERE id=" . $user->getId();
         
         if (Connection::connect($query)) {
             
