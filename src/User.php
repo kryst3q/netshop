@@ -219,5 +219,17 @@ class User {
         
     }
     
+    public function updateEmail(User $user, string $newEmail) : bool {
+        
+        $query = "UPDATE users SET email='" . $newEmail . "' WHERE id=" . $user->getId();
+        
+        if (Connection::connect($query)) {
+            
+            return TRUE;
+            
+        }
+        return FALSE;
+    }
+    
 }
 
