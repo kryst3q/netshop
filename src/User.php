@@ -231,5 +231,17 @@ class User {
         return FALSE;
     }
     
+    public function updateName(User $user, string $newName) : bool {
+        
+        $query = "UPDATE users SET name='" . $newName . "' WHERE id=" . $user->getId();
+        
+        if (Connection::connect($query)) {
+            
+            return TRUE;
+            
+        }
+        return FALSE;
+    }
+    
 }
 
