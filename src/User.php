@@ -83,7 +83,7 @@ class User {
 
     public function setEmail($email) : bool {
         
-        if (preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) {
+        if (User::validateEmail($email)) {
             
             $this->email = $email;
             return TRUE;
@@ -148,6 +148,16 @@ class User {
         
     }
     
+    static public function validateEmail($email) : bool {
+        
+        if (preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) {
+            
+            return TRUE;
+            
+        }
+        return FALSE;
+    }
+    
     static public function loadAllUsers() {
         
         $query = "SELECT * FROM users";
@@ -188,7 +198,7 @@ class User {
     
     static public function loadUserByEmail(string $email) {
         
-        if (!preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) {
+        if (!User::validateEmail($email)) {
 
             return FALSE;
             
