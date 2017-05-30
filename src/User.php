@@ -158,9 +158,7 @@ class User {
         return FALSE;
     }
     
-    static public function loadAllUsers() {
-        
-        $query = "SELECT * FROM users";
+    static public function loadAll($query) {
         
         $result = Connection::connect($query);
         
@@ -178,22 +176,40 @@ class User {
             
         }
         return FALSE;
+        
     }
     
-    static public function loadUserById(int $id) {
-        
-        $query = "SELECT * FROM users WHERE id=$id";
+    static public function loadOne($query) {
         
         $result = Connection::connect($query);
         
         if ($result) {
             
             $row = $result->fetch_assoc();
-            
             return User::createUserObject($row);
             
         }
         return FALSE;
+        
+    }
+    
+    static public function loadAllUsers() {
+        
+        $query = "SELECT * FROM users";
+        return User::loadAll($query);
+    }
+    
+    static public function loadAllActiveUsers() {
+        
+        $query = "SELECT * FROM users WHERE active=1";
+        return User::loadAll($query);
+    }
+    
+    static public function loadUserById(int $id) {
+        
+        $query = "SELECT * FROM users WHERE id=$id";
+        return User::loadOne($query);
+        
     }
     
     static public function loadUserByEmail(string $email) {
@@ -205,54 +221,39 @@ class User {
         }
         
         $query = "SELECT * FROM users WHERE email='" . $email . "'";
-        
-        $result = Connection::connect($query);
-        
-        if ($result) {
-            
-            $row = $result->fetch_assoc();
-            
-            return User::createUserObject($row);
-            
-        }
-        return FALSE;
+        return User::loadOne($query);
         
     }
     
     static public function updateEmail(User $user, string $newEmail) : bool {
         
         $query = "UPDATE users SET email='" . $newEmail . "' WHERE id=" . $user->getId();
-        
-        if (Connection::connect($query)) {
-            
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
     static public function updateName(User $user, string $newName) : bool {
         
         $query = "UPDATE users SET name='" . $newName . "' WHERE id=" . $user->getId();
+        return (Connection::connect($query)) ? TRUE : FALSE;
+    }
+    
+    static public function updateSurname(User $user, string $newSurname) : bool {
         
-        if (Connection::connect($query)) {
-            
-            return TRUE;
-            
-        }
-        return FALSE;
+        $query = "UPDATE users SET surname='" . $newSurname . "' WHERE id=" . $user->getId();
+        return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
     static public function updateAddress(User $user, string $newAddress) : bool {
         
         $query = "UPDATE users SET address='" . $newAddress . "' WHERE id=" . $user->getId();
+        return (Connection::connect($query)) ? TRUE : FALSE;
+    }
+    
+    static public function changeUserActivness(bool $active, int $userId) : bool {
         
-        if (Connection::connect($query)) {
-            
-            return TRUE;
-            
-        }
-        return FALSE;
+        $query = "UPDATE users SET active='" . $newAddress . "' WHERE id=$userId";
+        return (Connection::connect($query)) ? TRUE : FALSE;
+        
     }
     
 }
