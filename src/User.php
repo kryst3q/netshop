@@ -48,74 +48,44 @@ class User {
         return $this->active;
     }
 
-    public function setId($id) : bool {
+    public function setId($id) {
         
-        if (is_int($id)) {
-            
-            $this->id = $id;
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (is_int($id)) ? $this->id = $id : FALSE;
+    }
+    
+    static private function validateString($string) : bool {
+        
+        return (preg_match("/^[a-z]+$/i", $string)) ? TRUE : FALSE;
+        
     }
 
-    public function setName($name) : bool {
+    public function setName($name) {
         
-        if (preg_match("/^[a-z]+$/i", $name)) {
-            
-            $this->name = $name;
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (User::validateString($name)) ? $this->name = $name : FALSE;
     }
 
-    public function setSurname($surname) : bool {
+    public function setSurname($surname) {
         
-        if (preg_match("/^[a-z]+$/i", $surname)) {
-            
-            $this->surname = $surname;
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (User::validateString($surname)) ? $this->surname = $surname : FALSE;
     }
 
-    public function setEmail($email) : bool {
+    public function setEmail($email) {
         
-        if (User::validateEmail($email)) {
-            
-            $this->email = $email;
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (User::validateEmail($email)) ? $this->email = $email : FALSE;
     }
 
     public function setHashedPassword($password) {
         $this->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
     }
 
-    public function setAddress($address) : bool {
+    public function setAddress($address) {
         
-        if (preg_match("/^[a-z0-9 ,.\-]+$/i", $address)) {
-            
-            $this->address = $address;
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (preg_match("/^[a-z0-9 ,.\-]+$/i", $address)) ? $this->address = $address : FALSE;
     }
 
-    public function setActive($active) : bool {
+    public function setActive($active) {
         
-        if (is_bool($active)) {
-            
-            $this->active = $active;
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (is_bool($active)) ? $this->active = $active : FALSE;
     }
 
     public function createUser(User $user) : bool {
@@ -150,12 +120,7 @@ class User {
     
     static public function validateEmail($email) : bool {
         
-        if (preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) {
-            
-            return TRUE;
-            
-        }
-        return FALSE;
+        return (preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) ? TRUE : FALSE;
     }
     
     static public function loadAll($query) {
@@ -227,24 +192,28 @@ class User {
     
     static public function updateEmail(User $user, string $newEmail) : bool {
         
+        if (!User::validateEmail($newEmail)) {return FALSE;}
         $query = "UPDATE users SET email='" . $newEmail . "' WHERE id=" . $user->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
     static public function updateName(User $user, string $newName) : bool {
         
+        if (!User::validateString($newName)) {return FALSE;}
         $query = "UPDATE users SET name='" . $newName . "' WHERE id=" . $user->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
     static public function updateSurname(User $user, string $newSurname) : bool {
         
+        if (!User::validateString($newName)) {return FALSE;}
         $query = "UPDATE users SET surname='" . $newSurname . "' WHERE id=" . $user->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
     static public function updateAddress(User $user, string $newAddress) : bool {
         
+        if (!preg_match("/^[a-z0-9 ,.\-]+$/i", $address)) {return FALSE;}
         $query = "UPDATE users SET address='" . $newAddress . "' WHERE id=" . $user->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
