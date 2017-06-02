@@ -18,7 +18,7 @@ class Connection {
     
     static public function connect($query) {
         
-        $connection = new mysqli(self::$host, self::$username, self::$password, self::$db);
+        $connection = new mysqli(Connection::$host, Connection::$username, Connection::$password, Connection::$db);
         $result = $connection->query($query);
         
         $connection->close();

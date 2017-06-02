@@ -4,7 +4,7 @@ $connData = [
     'host'      => 'localhost',
     'username'  => 'root',
     'password'  => 'coderslab',
-    'db'        => 'netshop'
+    'db'        => 'netshopTest'
 ];
 
 Connection::getConnectionData($connData);
