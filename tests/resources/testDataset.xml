@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <users
+        id="1"
+        email="mail@domain.com"
+        hashed_password="$2y$10$sX0uh1gqjcUubFzVb9Aaxuw5Xq1eVF8f5XsMuxjAyNht5fnu1z8Zq"
+        name="John"
+        surname="Smith"
+        address="West Avenue 644, San Francisco"
+        active="1" />
+    <users
+        id="2"
+        email="email@domain.com"
+        hashed_password="$2y$10$15sQCkaQcnJ0Dcc5wU5bcOxEkDzrS0qZKnrCfMnoSj3i5DuSUtIXq"
+        name="Jane"
+        surname="Smith"
+        address="North Avenue 322, San Francisco"
+        active="1" />
+    <users
+        id="3"
+        email="email@google.com"
+        hashed_password="$2y$10$BPGyrWpK0nqHAb7wPHQPr.hFs.SdwuZ7WA8K4nhTpbG9iHwgiXAH."
+        name="Thor"
+        surname="Odynson"
+        address="Rainbow Bridge 7, Asgard"
+        active="0" />
+    <users
+        id="4"
+        email="email@yahoo.com"
+        hashed_password="$2y$10$eKFwKYscHZODub3Ertah1.zrW1fqxpw6rBNFjCQZjvtPlHfPGL2h6"
+        name="Tony"
+        surname="Stark"
+        address="Irona Road 1, San Francisco"
+        active="1" />
+    <messages
+        id="1"
+        title="Title1"
+        sender_id="1"
+        recipient_id="4"
+        post_date="2014-11-22 12:45:34"
+        read_date="2016-11-22 13:45:34"
+        message="Random message 1" />
+    <messages
+        id="2"
+        title="Title2"
+        sender_id="1"
+        recipient_id="4"
+        post_date="2015-12-22 12:45:34"
+        read_date="2015-12-23 12:45:34"
+        message="Random message 2" />
+    <messages
+        id="3"
+        title="Title3"
+        sender_id="4"
+        recipient_id="1"
+        post_date="2016-11-22 12:45:34"
+        read_date="2016-11-22 12:50:34"
+        message="Random message 3" />
+    <messages
+        id="4"
+        title="Title4"
+        sender_id="3"
+        recipient_id="4"
+        post_date="2014-10-09 12:45:34"
+        read_date="2014-11-22 12:45:34"
+        message="Random message 4" />
+    <messages
+        id="5"
+        title="Title5"
+        sender_id="3"
+        recipient_id="2"
+        post_date="2014-11-22 12:45:34"
+        read_date="2014-11-24 12:45:34"
+        message="Random message 5" />
+    <admins
+        id="1"
+        nickname="admin"
+        email="admin@netshop.pl"
+        hashed_password="$2y$10$JB0cjMLagKvvJ0kkTBZ/wuh6L2cY0FdXI/YeVaQeUMCnDJWyt3afS"
+        active="1" />
+    <admins
+        id="2"
+        nickname="admindwa"
+        email="admin2@netshop.pl"
+        hashed_password="$2y$10$12a5TYSvHaLgugSvuCljHO6VV9s7nqvhAw73ZaZADQB4D4Kbl8may"
+        active="0" />
+</dataset>
