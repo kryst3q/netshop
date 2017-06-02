@@ -1,91 +1,50 @@
 <?php
 
-class User {
+class User extends GlobalUser {
     
     public $id;
     public $name;
     public $surname;
-    public $email;
-    private $hashedPassword;
     public $address;
-    public $active;
     
     public function __construct() {
-        $this->id = -1;
-        $this->name = "";
-        $this->surname = "";
-        $this->email = "";
-        $this->hashedPassword = "";
-        $this->address = "";
         $this->active = TRUE;
-    }
-    
-    public function getId() : int {
-        return $this->id;
     }
 
     public function getName() : string {
+        
         return $this->name;
+        
     }
 
     public function getSurname() : string {
+        
         return $this->surname;
-    }
-
-    public function getEmail() : string {
-        return $this->email;
-    }
-
-    public function getHashedPassword() : string {
-        return $this->hashedPassword;
+        
     }
 
     public function getAddress() : string {
+       
         return $this->address;
-    }
-
-    public function getActive() {
-        return $this->active;
-    }
-
-    public function setId($id) {
         
-        return (is_int($id)) ? $this->id = $id : FALSE;
     }
     
-    static private function validateString($string) : bool {
-        
-        return (preg_match("/^[a-z]+$/i", $string)) ? TRUE : FALSE;
-        
-    }
-
     public function setName($name) {
         
         return (User::validateString($name)) ? $this->name = $name : FALSE;
+        
     }
 
     public function setSurname($surname) {
         
         return (User::validateString($surname)) ? $this->surname = $surname : FALSE;
-    }
-
-    public function setEmail($email) {
         
-        return (User::validateEmail($email)) ? $this->email = $email : FALSE;
-    }
-
-    public function setHashedPassword($password) {
-        $this->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
     }
 
     public function setAddress($address) {
         
         return (preg_match("/^[a-z0-9 ,.\-]+$/i", $address)) ? $this->address = $address : FALSE;
-    }
-
-    public function setActive($active) {
         
-        return (is_bool($active)) ? $this->active = $active : FALSE;
     }
 
     public function createUser(User $user) : bool {
@@ -98,7 +57,9 @@ class User {
                 . $user->getAddress() . "', "
                 . $user->getActive() . ")";
         
-        return (Connection::connect($query)) ? TRUE : FALSE;
+        $result = Connection::connect($query);
+        
+        return ($result) ? TRUE : FALSE;
         
     }
     
@@ -108,7 +69,7 @@ class User {
                 
         $user->setId(intval($row['id']));
         $user->setEmail($row['email']);
-        $user->setHashedPassword($row['hashed_password']);
+        $user->setPassword($row['hashed_password']);
         $user->setName($row['name']);
         $user->setSurname($row['surname']);
         $user->setAddress($row['address']);
@@ -118,16 +79,11 @@ class User {
         
     }
     
-    static public function validateEmail($email) : bool {
-        
-        return (preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-zA-Z]{2,}){1}$/", $email)) ? TRUE : FALSE;
-    }
-    
     static public function loadAll($query) {
         
         $result = Connection::connect($query);
         
-        if ($result) {
+        if ($result->num_rows != 0) {
             
             $users = [];
             
@@ -148,7 +104,7 @@ class User {
         
         $result = Connection::connect($query);
         
-        if ($result) {
+        if ($result->num_rows != 0) {
             
             $row = $result->fetch_assoc();
             return User::createUserObject($row);
@@ -179,7 +135,7 @@ class User {
     
     static public function loadUserByEmail(string $email) {
         
-        if (!User::validateEmail($email)) {
+        if (!GlobalUser::validateEmail($email)) {
 
             return FALSE;
             
@@ -190,38 +146,70 @@ class User {
         
     }
     
-    static public function updateEmail(User $user, string $newEmail) : bool {
+    public function changeUserEmail(string $newEmail) : bool {
         
-        if (!User::validateEmail($newEmail)) {return FALSE;}
-        $query = "UPDATE users SET email='" . $newEmail . "' WHERE id=" . $user->getId();
+        if (!GlobalUser::validateEmail($newEmail)) {return FALSE;}
+        $query = "UPDATE users SET email='" . $newEmail . "' WHERE id=" . $this->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
-    static public function updateName(User $user, string $newName) : bool {
+    public function changeUserName(string $newName) : bool {
         
-        if (!User::validateString($newName)) {return FALSE;}
-        $query = "UPDATE users SET name='" . $newName . "' WHERE id=" . $user->getId();
+        if (!GlobalUser::validateString($newName)) {return FALSE;}
+        $query = "UPDATE users SET name='" . $newName . "' WHERE id=" . $this->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
-    static public function updateSurname(User $user, string $newSurname) : bool {
+    public function changeUserSurname(string $newSurname) : bool {
         
-        if (!User::validateString($newName)) {return FALSE;}
-        $query = "UPDATE users SET surname='" . $newSurname . "' WHERE id=" . $user->getId();
+        if (!GlobalUser::validateString($newSurname)) {return FALSE;}
+        $query = "UPDATE users SET surname='" . $newSurname . "' WHERE id=" . $this->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
-    static public function updateAddress(User $user, string $newAddress) : bool {
+    public function changeUserAddress(string $newAddress) : bool {
         
-        if (!preg_match("/^[a-z0-9 ,.\-]+$/i", $address)) {return FALSE;}
-        $query = "UPDATE users SET address='" . $newAddress . "' WHERE id=" . $user->getId();
+        if (!preg_match("/^[a-z0-9 ,.\-]+$/i", $newAddress)) {return FALSE;}
+        $query = "UPDATE users SET address='" . $newAddress . "' WHERE id=" . $this->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
     }
     
-    static public function changeUserActivness(bool $active, int $userId) : bool {
+    public function changeUserActivness($active) : bool {
         
-        $query = "UPDATE users SET active='" . $newAddress . "' WHERE id=$userId";
+        $query = "UPDATE users SET active = $active WHERE id=" . $this->getId();
         return (Connection::connect($query)) ? TRUE : FALSE;
+        
+    }
+    
+    public function changeUserPassword(string $oldPassword, string $newPassword) : bool {
+        
+        if (password_verify($oldPassword, $this->getHashedPassword())) {
+            
+            $this->setHashedPassword($newPassword);
+            
+            $query = "UPDATE users SET hashed_password='" . $this->getHashedPassword() . "' WHERE id=" . $this->getId();
+            
+            return (Connection::connect($query)) ? TRUE : FALSE;
+            
+        }
+        return FALSE;
+    }
+    
+    public function showUsersMessages() {
+        
+        return Message::loadAllMessagesByRecipientId($this->getId());
+        
+    }
+    
+    public function login() {
+        
+        $_SESSION['user_id'] = $this->getId();
+        
+    }
+    
+    public function logout () {
+        
+        unset($_SESSION['user_id']);
         
     }
     
