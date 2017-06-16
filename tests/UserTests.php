@@ -21,7 +21,7 @@ class UserTests extends TestCase {
             $GLOBALS['DB_PASSWD']
         );
         
-//        $conn->query("set foreign_key_checks=0");
+        $conn->query("set foreign_key_checks=0");
         
         return $this->createDefaultDBConnection($conn, $GLOBALS['DB_DBNAME']);
         
@@ -46,7 +46,7 @@ class UserTests extends TestCase {
         $user->setSurname('Test');
         $user->setAddress('Test Road 1, San Francisco');
         
-        $this->assertTrue($user->createUser($user));
+        $this->assertTrue($user->addToDB($user));
         $this->assertEquals(5, $this->getConnection()->getRowCount('users'));
         
     }
@@ -139,5 +139,13 @@ class UserTests extends TestCase {
 //        $this->assertEquals(4, $_SESSION['user_id']);
 //        
 //    }
+    
+    public function testIfShowsHistoryOfUsersOrders() {
+        
+        $user = User::loadUserById(1);
+        $history = $user->showUsersOrdersHistory();
+        $this->assertEquals(2, $history->num_rows);
+        
+    }
     
 }
