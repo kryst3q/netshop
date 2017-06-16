@@ -84,4 +84,76 @@
         email="admin2@netshop.pl"
         hashed_password="$2y$10$12a5TYSvHaLgugSvuCljHO6VV9s7nqvhAw73ZaZADQB4D4Kbl8may"
         active="0" />
+    <products
+        id="1"
+        name="bread"
+        price="1"
+        description="baked as in old times"
+        availability="10"
+        group_id="1"
+        image_path="/images/bread.png"    />
+    <products
+        id="2"
+        name="jam"
+        price="4"
+        description="from strawberries"
+        availability="5"
+        group_id="2"
+        image_path="/images/jam.png"    />
+    <products
+        id="3"
+        name="juice"
+        price="3"
+        description="orange juice"
+        availability="15"
+        group_id="3"
+        image_path="/images/juice.png"    />
+    <products
+        id="4"
+        name="egg"
+        price="1"
+        description="from happy, free chickens"
+        availability="60"
+        group_id="4"
+        image_path="/images/egg.png"    />
+    <groups
+        id="1"
+        name="baking"    />
+    <groups
+        id="2"
+        name="jams"    />
+    <groups
+        id="3"
+        name="beverages"    />
+    <groups
+        id="4"
+        name="eggs"    />
+    <products_groups
+        id="1"
+        product_id="1"
+        group_id="1"    />
+    <products_groups
+        id="2"
+        product_id="2"
+        group_id="2"    />
+    <products_groups
+        id="3"
+        product_id="3"
+        group_id="3"    />
+    <products_groups
+        id="4"
+        product_id="4"
+        group_id="4"    />
+    <orders
+        id="1"
+        user_id="1"
+        product_id="2"
+        status="executed"
+        execution_datetime="2017-06-06 12:00:00"    />
+    <orders
+        id="2"
+        user_id="1"
+        product_id="3"
+        status="executed"
+        execution_datetime="2017-06-07 12:00:00"    />
 </dataset>
