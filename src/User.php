@@ -8,6 +8,7 @@ class User extends GlobalUser {
     public $address;
     
     public function __construct() {
+        $this->id = -1;
         $this->active = TRUE;
     }
 
@@ -47,15 +48,29 @@ class User extends GlobalUser {
         
     }
 
-    public function createUser(User $user) : bool {
+    public function addToDB(User $user) : bool {
         
-        $query = "INSERT INTO users (email, hashed_password, name, surname, address, active) VALUES ('"
+        if ($user->getId() == -1) {
+            
+            $query = "INSERT INTO users (email, hashed_password, name, surname, address, active) VALUES ('"
                 . $user->getEmail() . "', '"
                 . $user->getHashedPassword() . "', '"
                 . $user->getName() . "', '"
                 . $user->getSurname() . "', '"
                 . $user->getAddress() . "', "
                 . $user->getActive() . ")";
+            
+        } else {
+            
+            $query = "UPDATE users SET "
+                    . "email='" . $user->getEmail() . "', "
+                    . "hashed_password='" . $user->getHashedPassword() . "', "
+                    . "name='" . $user->getName() . "', "
+                    . "surname='" . $user->getSurname() . "', "
+                    . "address='" . $user->getAddress() . "', "
+                    . "active=" . $user->getActive() . " WHERE id=" . $user->getId();
+            
+        }
         
         $result = Connection::connect($query);
         
@@ -211,6 +226,12 @@ class User extends GlobalUser {
         
         unset($_SESSION['user_id']);
         
+    }
+    
+    public function showUsersOrdersHistory() {
+        
+        $query = "SELECT o.product_id, o.execution_datetime, p.name FROM orders o, products p WHERE id=" . $this->getId() . " AND status='executed' JOIN o.product_id = p.id";
+        return Connection::connect($query);
     }
     
 }
